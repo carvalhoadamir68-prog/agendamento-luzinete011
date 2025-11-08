@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Professora Luzinete — Agendamento</title>
+  <meta name="description" content="Professora substituta (Matemática e áreas correlatas) — Agende via WhatsApp." />
+  <style>
+    :root{
+      --card-bg: rgba(255,255,255,0.98);
+      --muted: #4b5563;
+      font-family: Inter, 'Segoe UI', Roboto, Arial, sans-serif;
+    }
+    html,body{height:100%;margin:0;background:linear-gradient(135deg, #004cff 0%, #ffdd00 50%, #ff003c 100%);color:#03203C}
+    header{padding:18px 22px;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:48px;height:48px;border-radius:10px;background:linear-gradient(180deg,#004cff,#ffdd00,#ff003c);display:flex;align-items:center;justify-content:center;color:white;font-weight:700}
+    .container{max-width:980px;margin:20px auto;padding:12px}
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:20px;align-items:start}
+    .card{background:var(--card-bg);border-radius:12px;padding:18px;box-shadow:0 10px 20px rgba(2,6,23,0.12)}
+    h2{margin-top:0}
+    label{display:block;margin-top:10px;font-weight:600}
+    input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.08);margin-top:6px}
+    button.primary{background:linear-gradient(90deg,#004cff,#ffdd00,#ff003c);border:none;color:white;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;margin-top:12px}
+    .whatsapp{display:inline-flex;gap:10px;align-items:center;background:#25D366;color:white;padding:10px 12px;border-radius:10px;text-decoration:none;font-weight:700}
+    .muted{color:var(--muted);font-size:13px}
+    @media (max-width:920px){.hero{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo">LZ</div>
+      <div>
+        <div style="font-weight:800">Professora Luzinete</div>
+        <div class="muted">Substituta — Matemática & Suporte Multidisciplinar</div>
+      </div>
+    </div>
+    <div class="muted">WhatsApp: (67) 99302-6841</div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="card">
+        <h2>Professora Substituta — Matemática</h2>
+        <p><strong>Sou graduada de 2º grau em Matemática com licenciatura pela UFMS/CPAQ.</strong></p>
+        <p class="muted">Atuação dedicada com suporte em UC1, UC2, UC3, UC4, Física, Química, Geometria e outras áreas. Valores negociáveis.</p>
+      </div>
+
+      <aside class="card">
+        <h3 style="margin-top:0">Agende uma substituição</h3>
+        <form id="bookingForm" enctype="multipart/form-data">
+          <label for="name">Seu nome</label>
+          <input id="name" name="name" required placeholder="Ex: João da Silva" />
+
+          <label for="contact">Qual seu número de contato (ligações/WhatsApp)?</label>
+          <input id="contact" name="contact" type="tel" placeholder="Ex: (67) 99999-9999" required />
+
+          <label for="school">Nome da escola (opcional)</label>
+          <input id="school" name="school" placeholder="Ex: Escola Municipal ABC" />
+
+          <label for="date">Data preferida</label>
+          <input id="date" name="date" type="date" />
+
+          <label for="period">Período da substituição</label>
+          <select id="period" name="period">
+            <option value="Matutino">Matutino</option>
+            <option value="Vespertino">Vespertino</option>
+            <option value="Noturno">Noturno (negociação)</option>
+          </select>
+
+          <label for="time">Qual horário começa sua aula?</label>
+          <input id="time" name="time" type="time" />
+
+          <label for="message">Insira aqui o conteúdo que deve ser ensinado/passado para os alunos</label>
+          <textarea id="message" name="message" rows="3" placeholder="Descreva o conteúdo a ser abordado"></textarea>
+
+          <label for="fileUpload">Envie arquivos de apoio (PDF, PPTX, DOCX, etc.)</label>
+          <input id="fileUpload" name="fileUpload" type="file" accept=".pdf,.pptx,.docx,.xlsx,.txt,.zip" multiple />
+
+          <label for="imageUpload">Envie imagens relacionadas ao conteúdo</label>
+          <input id="imageUpload" name="imageUpload" type="file" accept="image/*" multiple />
+
+          <button type="submit" class="primary">Gerar pedido de agendamento</button>
+        </form>
+
+        <div style="margin-top:12px">
+          <a class="whatsapp" id="waButton" href="https://wa.me/5567993026841" target="_blank" rel="noopener">Agendar via WhatsApp</a>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <div id="toast" style="display:none;position:fixed;right:18px;bottom:18px;background:#022039;color:white;padding:12px 16px;border-radius:10px;">Mensagem gerada — clique em &quot;Agendar via WhatsApp&quot; para enviar.</div>
+
+  <script>
+    const form = document.getElementById('bookingForm');
+    const waBtn = document.getElementById('waButton');
+    const toast = document.getElementById('toast');
+
+    form.addEventListener('submit', async function(e){
+      e.preventDefault();
+
+      const name = document.getElementById('name').value || 'Nome não informado';
+      const contact = document.getElementById('contact').value || 'Contato não informado';
+      const school = document.getElementById('school').value || 'Não informado';
+      const date = document.getElementById('date').value || 'Data não informada';
+      const period = document.getElementById('period').value || 'Período não informado';
+      const time = document.getElementById('time').value || 'Horário não informado';
+      const message = document.getElementById('message').value || '';
+
+      const text = `Olá, sou ${name}. Gostaria de agendar uma substituição com a Professora Luzinete.
+Contato: ${contact}
+Escola: ${school}
+Data: ${date}
+Período: ${period}
+Horário de início: ${time}
+Conteúdo: ${message}`;
+
+      const encoded = encodeURIComponent(text);
+      waBtn.href = `https://wa.me/5567993026841?text=${encoded}`;
+
+      try {
+        const fd = new FormData(form);
+        await fetch('/submit', { method: 'POST', body: fd });
+      } catch (err) {
+        console.warn('Erro ao enviar para backend (opcional):', err);
+      }
+
+      toast.style.display = 'block';
+      setTimeout(()=> toast.style.display = 'none', 4200);
+    });
+  </script>
+</body>
+</html>
